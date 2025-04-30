@@ -1,0 +1,27 @@
+helapidi/
+├── client/
+│   ├── index.html             # Main game page
+│   ├── styles/
+│   │   └── main.css           # Game styling
+│   ├── assets/
+│   │   ├── sprites/           # Character and object sprites
+│   │   ├── tiles/             # Map tiles
+│   │   ├── ui/                # UI elements
+│   │   └── audio/             # Sound effects and music
+│   └── js/
+│       ├── main.js            # Entry point
+│       ├── game.js            # Core game loop
+│       ├── renderer.js        # Canvas rendering
+│       ├── input.js           # Player input handling
+│       ├── physics.js         # Collision and movement physics
+│       ├── network.js         # Multiplayer communication
+│       ├── player.js          # Player class and logic
+│       ├── weapon.js          # Weapons and projectiles
+│       ├── map.js             # Map loading and handling
+│       └── ui.js              # User interface elements
+├── server/
+│   ├── index.js               # Server entry point
+│   ├── game.js                # Server-side game logic
+│   ├── room.js                # Room/lobby management
+│   └── player.js              # Server-side player handling
+└── README.md                  # Project documentation
