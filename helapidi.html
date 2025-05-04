@@ -10,16 +10,38 @@
 <body>
   <canvas id="gameCanvas" width="800" height="600"></canvas>
  <!-- this game eate my brain and now iam become a zombie--> 
-  <!-- <div class="game-info">
     <h2>Hēlapidi Prototype</h2>
-    <p>Controls:</p>
-    <ul>
-      <li>Move: Arrow Keys or WASD</li>
-      <li>Jump: Space or Up Arrow</li>
-      <li>Aim: Mouse</li>
-      <li>Shoot: Left Click</li>
-    </ul>
-  </div> -->
+  <div id="settings-panel" class="settings-panel">
+    <h2>Game Settings</h2>
+    <div>
+      <label for="player-count">Number of Players:</label>
+      <select id="player-count">
+        <option value="1" selected>1</option>
+        <option value="2" selected>2</option>
+        <option value="3" selected>3</option>
+        <option value="4" selected>4</option>
+      </select>
+    </div>
+    
+    <div id="color-settings">
+      <label>Player Colors:</label>
+      <div>
+        <span>Player 1: </span>
+        <input type="color" id="color-0" value="#FF5555">
+      </div>
+      <div>
+        <span>Player 2: </span>
+        <input type="color" id="color-1" value="#5555FF">
+      </div>
+    </div>
+    
+    <div>
+      <h3>Controls:</h3>
+      <div class="control-info">
+        <p><strong>Player 1:</strong> W/A/S/D to move, F to attack</p>
+        <p><strong>Player 2:</strong> Arrow keys to move, 0 to attack</p>
+      </div>
+    </div>
   <script src="game.js"></script>
   <script src="shooting.js"></script>
   <script src="enemy.js"></script>
