@@ -94,7 +94,7 @@ class Player{
       }
         update(otherPlayers) {
           
-        // Read inputs
+       // Read inputs
         let xInput = 0;
         if (this.input.left) xInput--;
         if (this.input.right) xInput++;
@@ -115,6 +115,36 @@ class Player{
         // Boundary checks
             this.position.x = Math.max(50, Math.min(750, this.position.x));
             this.position.y = Math.max(100, Math.min(550, this.position.y));
+
+        //Turn
+            if(xInput>0)
+              this.facingRight=true;
+            else if(xInput<0)
+              this.facingRight=false;
+            
+        //Set animation based on movement
+            if(xInput===0&&yInput===0)
+              this.animation=(!this.facingRight)?this.animations.stand:
+                this.animations.standR;
+            else
+              this.animation=(!this.facingRight)?this.animations.run:
+                this.animations.runR;
+            
+        //Attack
+            if(this.input.attack){
+              this.action=this.actions.ATTACK.PUNCH;
+              this.animation=(!this.facingRight)?this.animations.punch:
+                this.animations.punchR;
+              this.animation.reset();
+
+        //Check for hits on other players
+              if(otherPlayers){
+                const hitbox={
+                  size:{x:56, y:24},
+                  offset:!this.facingRight
+                    ?{x:-56, y:-12}
+                    :{x:0, y:-12}
+                };
       //BAD/IT/2324/F/081(finished)
     
     
