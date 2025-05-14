@@ -41,3 +41,25 @@ update(){
   }
 }
   //BAD/IT/2324/F/076(FINISHED)
+  //BAD/IT/2324/F/081(STARTED)
+  //Player class
+  class Player{
+    constructor(id,x,y,color){
+      this.id = id;
+      this.position = {x,y};
+      this.hurtbox = {
+        size:{x:44, y:12},
+        offset:{x:-22, y:-6}
+    };
+    this.movespeed ={x:6, y=:4};
+    this.facingRight =false;
+    this.input = {};
+    this.health = 100;
+    this.color = color|| '#000000';
+
+      //Actions
+      
+    
+    
+      
+  
