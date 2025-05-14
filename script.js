@@ -45,7 +45,12 @@ update(){
 pause(pauseFrames){
   this.pauseFrames=pauseFrames;
 }
-
+ reset(){
+   this.isDone=false;
+   this.frame=0;
+   this.index=0;
+ }
+  
   getDrawIndex(){
     return this.starIndex+this.index;
   }
