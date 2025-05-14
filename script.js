@@ -41,7 +41,7 @@ update(){
   }
 }
   //BAD/IT/2324/F/076(FINISHED)
-  //BAD/IT/2324/F/081(STARTED)
+  //BAD/IT/2324/F/081(starting)
 pause(pauseFrames){
   this.pauseFrames=pauseFrames;
 }
@@ -76,6 +76,46 @@ class Player{
       HURT:'hurt',
       ATTACK:{PUNCH:'attack.punch'}
     };
+    
+    // Animations
+        this.animations = {
+          stand: new Animation('stickman', 0, 3, 4, true),
+          standR: new Animation('stickmanR', 0, 3, 4, true),
+          run: new Animation('stickman', 3, 4, 3, true),
+          runR: new Animation('stickmanR', 3, 4, 3, true),
+          hurt: new Animation('stickman', 7, 5, 3, false),
+          hurtR: new Animation('stickmanR', 7, 5, 3, false),
+          punch: new Animation('stickmanAttacks', 0, 6, 3, false),
+          punchR: new Animation('stickmanAttacksR', 0, 6, 3, false)
+        };
+        
+        this.action = this.actions.NONE;
+        this.animation = this.animations.stand;
+      }
+        update(otherPlayers) {
+          
+        // Read inputs
+        let xInput = 0;
+        if (this.input.left) xInput--;
+        if (this.input.right) xInput++;
+        let yInput = 0;
+        if (this.input.up) yInput--;
+        if (this.input.down) yInput++;
+
+        this.animation.update();
+
+        // Handle actions
+        switch(this.action) {
+          case this.actions.NONE:
+            
+        // Movement
+            this.position.x += xInput * this.movespeed.x;
+            this.position.y += yInput * this.movespeed.y;
+            
+        // Boundary checks
+            this.position.x = Math.max(50, Math.min(750, this.position.x));
+            this.position.y = Math.max(100, Math.min(550, this.position.y));
+    
     
 
   
