@@ -115,6 +115,7 @@ class Player{
         // Boundary checks
             this.position.x = Math.max(50, Math.min(750, this.position.x));
             this.position.y = Math.max(100, Math.min(550, this.position.y));
+      //BAD/IT/2324/F/081(finished)
     
     
 
