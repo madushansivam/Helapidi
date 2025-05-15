@@ -77,75 +77,132 @@ class Player{
       ATTACK:{PUNCH:'attack.punch'}
     };
     
-    // Animations
-        this.animations = {
-          stand: new Animation('stickman', 0, 3, 4, true),
-          standR: new Animation('stickmanR', 0, 3, 4, true),
-          run: new Animation('stickman', 3, 4, 3, true),
-          runR: new Animation('stickmanR', 3, 4, 3, true),
-          hurt: new Animation('stickman', 7, 5, 3, false),
-          hurtR: new Animation('stickmanR', 7, 5, 3, false),
-          punch: new Animation('stickmanAttacks', 0, 6, 3, false),
-          punchR: new Animation('stickmanAttacksR', 0, 6, 3, false)
-        };
-        
-        this.action = this.actions.NONE;
-        this.animation = this.animations.stand;
-      }
-        update(otherPlayers) {
+// Animations
+    this.animations = {
+      stand: new Animation('stickman', 0, 3, 4, true),
+      standR: new Animation('stickmanR', 0, 3, 4, true),
+      run: new Animation('stickman', 3, 4, 3, true),
+      runR: new Animation('stickmanR', 3, 4, 3, true),
+      hurt: new Animation('stickman', 7, 5, 3, false),
+      hurtR: new Animation('stickmanR', 7, 5, 3, false),
+      punch: new Animation('stickmanAttacks', 0, 6, 3, false),
+      punchR: new Animation('stickmanAttacksR', 0, 6, 3, false)
+    };
+    this.action = this.actions.NONE;
+    this.animation = this.animations.stand;
+  }
+  update(otherPlayers) {
           
-       // Read inputs
-        let xInput = 0;
-        if (this.input.left) xInput--;
-        if (this.input.right) xInput++;
-        let yInput = 0;
-        if (this.input.up) yInput--;
-        if (this.input.down) yInput++;
+// Read inputs
+    let xInput = 0;
+    if (this.input.left) xInput--;
+    if (this.input.right) xInput++;
+    let yInput = 0;
+    if (this.input.up) yInput--;
+    if (this.input.down) yInput++;
+    
+    this.animation.update();
 
-        this.animation.update();
+// Handle actions
+    switch(this.action) {
+      case this.actions.NONE:
+            
+// Movement
+        this.position.x += xInput * this.movespeed.x;
+        this.position.y += yInput * this.movespeed.y;
+            
+// Boundary checks
+        this.position.x = Math.max(50, Math.min(750, this.position.x));
+        this.position.y = Math.max(100, Math.min(550, this.position.y));
 
-        // Handle actions
-        switch(this.action) {
-          case this.actions.NONE:
+//Turn
+        if(xInput>0)
+          this.facingRight=true;
+        else if(xInput<0)
+          this.facingRight=false;
             
-        // Movement
-            this.position.x += xInput * this.movespeed.x;
-            this.position.y += yInput * this.movespeed.y;
+//Set animation based on movement
+        if(xInput===0&&yInput===0)
+          this.animation=(!this.facingRight)?this.animations.stand:
+            this.animations.standR;
+        else
+          this.animation=(!this.facingRight)?this.animations.run:
+            this.animations.runR;
             
-        // Boundary checks
-            this.position.x = Math.max(50, Math.min(750, this.position.x));
-            this.position.y = Math.max(100, Math.min(550, this.position.y));
+//Attack
+        if(this.input.attack){
+          this.action=this.actions.ATTACK.PUNCH;
+          this.animation=(!this.facingRight)?this.animations.punch:
+            this.animations.punchR;
+          this.animation.reset();
 
-        //Turn
-            if(xInput>0)
-              this.facingRight=true;
-            else if(xInput<0)
-              this.facingRight=false;
-            
-        //Set animation based on movement
-            if(xInput===0&&yInput===0)
-              this.animation=(!this.facingRight)?this.animations.stand:
-                this.animations.standR;
-            else
-              this.animation=(!this.facingRight)?this.animations.run:
-                this.animations.runR;
-            
-        //Attack
-            if(this.input.attack){
-              this.action=this.actions.ATTACK.PUNCH;
-              this.animation=(!this.facingRight)?this.animations.punch:
-                this.animations.punchR;
-              this.animation.reset();
+//Check for hits on other players
+          if(otherPlayers){
+            const hitbox={
+              size:{x:56, y:24},
+              offset:!this.facingRight
+                ?{x:-56, y:-12}
+                :{x:0, y:-12}
+          };
+          otherPlayers.forEach(player=>{
+            if (this.checkCollision(
+              hitbox,this.position,
+              player.hurtbox,player.posotion)){
+              player.hurt();
+              this.animation.pause(5);
+            }
+          });
+          }
+        }
+        break;
+      case this.actions.HURT:
+        if(this.animation.isDone){
+          this.action=this.actions.NONE;
+          this.animation=(!this.facingRight)?
+            this.animations.stand:
+            this.animations.standR;
+        }
+        break;
 
-        //Check for hits on other players
-              if(otherPlayers){
-                const hitbox={
-                  size:{x:56, y:24},
-                  offset:!this.facingRight
-                    ?{x:-56, y:-12}
-                    :{x:0, y:-12}
-                };
-      //BAD/IT/2324/F/081(finished)
+      default:
+        break;
+    }
+  }
+
+  setButton(button,value){
+    this.input[button]=value;
+  }
+  
+  hurt(){
+    this.health=Math.mas(0,this.health-10);
+    this.action=this.actions.HURT;
+    this.animation=(!this.facingRight)?this.animations.hurt:
+      this.animations.hurtR;
+    this.animation.reset();
+  }
+  checkCollision(box1,box1Pos,box2,box2Pos){
+    return(
+      box1Pos.x + box1.offset.x < box2Pos.x + box2.offset.x + box2.size.x
+      && box1Pos.x + box1.offset.x + box1.size
+      && box1Pos.y + box1.offset.y < box2Pos.y + box2.offset.y + box2.size.y
+      && box1Pos.y + box1.offset.y + box1.size.y > box2Pos.y + box2.offset.y
+      );
+  }
+
+  getDrawInfo(){
+    return{
+      position:this.position,
+      facingRight:this.facingRight,
+      animation:{
+        spriteKey:this.animation.spriteKey,index:
+          this.animation.getDrawIndex(),
+      },
+      color:this.color,
+      health:this.health
+    };
+  }
+}      
+//BAD/IT/2324/F/081(finished)
     
     
 
