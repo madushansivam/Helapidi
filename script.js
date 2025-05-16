@@ -201,7 +201,25 @@ class Player{
       health:this.health
     };
   }
-}      
+}
+
+//Generate stick figure SVG for various positions
+ function generateFigureSVG(color,pose='stand',frameIndex=0,facingRight=false){
+   const svgNS="http:www.w3.org/2000/scg";
+   const svg=document.createElementNS(svgNS,"svg");
+   svg.setAttribute("width","64");
+   svg.setAttribute("height","64");
+   svg.setAttribute("viewBox","-32 -50 64 80");
+
+//Shadow ellipse
+   const shadow=document.createElementNS(svgNS,"ellipse");
+   shadow.setAttribute("cx","0");
+   shadow.setAttribute("cy","25");
+   shadow.setAttribute("rx","20");
+   shadow.setAttribute("ry","5");
+   shadow.setAttribute("fill","rgba(0,0,0,0.2");
+   svg.appendChild(shadow);
+   
 //BAD/IT/2324/F/081(finished)
     
     
